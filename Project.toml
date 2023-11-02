@@ -1,0 +1,13 @@
+name = "MakieThemes"
+uuid = "869f25fa-aa5d-44dc-94ec-f3ee8a2fe269"
+authors = ["Malte Pütz"]
+version = "1.0.0-DEV"
+
+[compat]
+julia = "1.9.3"
+
+[extras]
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[targets]
+test = ["Test"]
