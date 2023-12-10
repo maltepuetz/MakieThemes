@@ -45,17 +45,21 @@ function get_BBox(ax;
 end
 
 """
-    SysSizeLeg(ax, Ls;
+    SysSizeLeg(ax, Ls, colors;
         kwargs...)
 
 #### kwargs:
 - markersize
 - marker
+- linewidth
+- linestyle
 - colors
 - labels
 - position
 - margin
 - title
+- element
+
 """
 function SysSizeLeg(ax, Ls, colors;
     kwargs...)
