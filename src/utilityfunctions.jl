@@ -2,8 +2,8 @@
 
 ##### some useful functions
 """
-    get_BBox(ax; 
-        margin = (7.0, 7.0, 7.0, 7.0), 
+    get_BBox(ax;
+        margin = (7.0, 7.0, 7.0, 7.0),
         position = :rt,
         width = 100,
         height = 100,
@@ -63,6 +63,8 @@ function SysSizeLeg(ax, Ls, colors;
     haskey(kwargs, :markersize) ? markersize = kwargs[:markersize] : markersize = 6.5
     haskey(kwargs, :marker) ? marker = kwargs[:marker] : marker = :circle
     haskey(kwargs, :strokewidth) ? strokewidth = kwargs[:strokewidth] : strokewidth = 0.7
+    haskey(kwargs, :linewidth) ? linewidth = kwargs[:linewidth] : linewidth = 2.0
+    haskey(kwargs, :linestyle) ? linestyle = kwargs[:linestyle] : linestyle = :solid
     haskey(kwargs, :labels) ? labels = kwargs[:labels] : labels =
         begin
             # get the number of characters in an integer
@@ -79,12 +81,47 @@ function SysSizeLeg(ax, Ls, colors;
     haskey(kwargs, :position) ? position = kwargs[:position] : position = :rt
     haskey(kwargs, :margin) ? margin = kwargs[:margin] : margin = ax.blockscene.theme[:Legend][:margin][]
     haskey(kwargs, :title) ? title = kwargs[:title] : title = "System Sizes"
+    haskey(kwargs, :element) ? element = kwargs[:element] : element = :scatter
+
+    elements = [
+        if element == :scatter
+            MarkerElement(
+                color=colors[i],
+                markersize=markersize,
+                marker=marker,
+                strokewidth=strokewidth
+            )
+        elseif element == :line
+            LineElement(
+                color=colors[i],
+                linewidth=linewidth,
+                linestyle=linestyle,
+            )
+        elseif element == :scatterline
+            [
+                LineElement(
+                    color=colors[i],
+                    linewidth=linewidth,
+                    linestyle=linestyle,
+                ),
+                MarkerElement(
+                    color=colors[i],
+                    markersize=markersize,
+                    marker=marker,
+                    strokewidth=strokewidth
+                )
+            ]
+        else
+            throw(ArgumentError("element must be one of [:scatter, :line, :scatterline]"))
+        end
+        for i in length(Ls):-1:1
+    ]
 
 
     if typeof(position) == Array{Int64,1}
         Legend(
             ax.parent[position[1], position[2]],
-            [MarkerElement(color=colors[i], markersize=markersize, marker=marker, strokewidth=strokewidth) for i in length(Ls):-1:1],
+            elements,
             labels,
             title;
             margin=margin
@@ -99,7 +136,7 @@ function SysSizeLeg(ax, Ls, colors;
     else
         axislegend(
             ax,
-            [MarkerElement(color=colors[i], markersize=markersize, marker=marker, strokewidth=strokewidth) for i in length(Ls):-1:1],
+            elements,
             labels,
             title;
             position=position,

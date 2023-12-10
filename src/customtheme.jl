@@ -16,14 +16,11 @@ struct CustomTheme
         # set the size of the figure
         size_pt = 72 .* size_inches
 
-        # load the font
-        LaTeX_font = (@__DIR__) * "/fonts/cmunrm.ttf"
-
         theme = Theme(
             figure_padding=2,
-            resolution=size_pt,
+            size=size_pt,
             fontsize=10,
-            fonts=(; LaTeX=LaTeX_font),
+            ##fonts=(; LaTeX=LaTeX_font),
             Lines=(
                 linewidth=2.0,
             ),
@@ -32,39 +29,35 @@ struct CustomTheme
                 strokewidth=0.7,
                 marker=:circle
             ),
+            ScatterLines=(
+                linewidth=2.0,
+                markersize=5.0,
+                strokewidth=0.7,
+                marker=:circle,
+            ),
             Errorbars=(
                 linewidth=0.7,
                 whiskerwidth=6.0
             ),
             Axis=(
-                # change all fonts to LaTeX
-                subtitlefont=:LaTeX,
-                titlefont=:LaTeX,
-                xlabelfont=:LaTeX,
-                xticklabelfont=:LaTeX,
-                ylabelfont=:LaTeX,
-                yticklabelfont=:LaTeX,
+                titlefont=:regular,
             ),
             Axis3=(
-                # change all fonts to LaTeX
-                subtitlefont=:LaTeX,
-                titlefont=:LaTeX,
-                xlabelfont=:LaTeX,
-                xticklabelfont=:LaTeX,
-                ylabelfont=:LaTeX,
-                yticklabelfont=:LaTeX,
+                titlefont=:regular,
             ),
             Legend=(
-                labelfont=:LaTeX,
+                labelfont=:regular,
                 padding=(8.0f0, 8.0f0, 5.0f0, 5.0f0), # The additional space between the legend content and the border.
-                patchlabelgap=5, # The gap between the patch and the label of each legend entry. 
+                patchlabelgap=5, # The gap between the patch and the label of each legend entry.
                 patchsize=(11, 6), # The size of the rectangles containing the legend markers.
                 rowgap=2, # The gap between the entry rows.
-                titlefont=:LaTeX,
+                titlefont=:regular,
                 titlegap=3,
                 margin=(7.0f0, 7.0f0, 7.0f0, 7.0f0),
             ),
         )
+
+        theme = merge(theme, theme_latexfonts())
 
         # create the theme
         return new(name, size_inches, type, pt_per_unit, theme)
